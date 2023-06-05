@@ -1,110 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RegisterActivity"
     android:background="@drawable/background2_gradasi">
 
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="176dp"
         android:layout_height="119dp"
-        android:src="@drawable/logo_black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.544"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.044"
-        tools:ignore="MissingConstraints" />
-
-    <ScrollView
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/logo_black"/>
+    <!--Layout-->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
-        <RelativeLayout
-            android:id="@+id/form2"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--        Title-->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:elevation="10dp"
-            android:orientation="vertical"
-            android:layout_marginTop="200dp"
-            android:paddingTop="22dp"
-            android:paddingBottom="22dp">
-            <LinearLayout
-                android:id="@+id/formRegister"
+            android:layout_marginTop="150dp">
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:orientation="vertical">
-                <EditText
-                    android:id="@+id/fullname"
-                    android:layout_width="330dp"
-                    android:layout_height="wrap_content"
-                    android:hint="Fullname" />
-                <EditText
-                    android:id="@+id/email"
-                    android:layout_width="330dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Email"
-                    android:layout_marginTop="15dp"
-                    android:inputType="textEmailAddress" />
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="330dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Password"
-                    android:layout_marginTop="15dp"
-                    android:inputType="textPassword" />
-                <EditText
-                    android:id="@+id/confirm_password"
-                    android:layout_width="330dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Confirm Password"
-                    android:layout_marginTop="15dp"
-                    android:inputType="textPassword" />
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="330dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="80dp"
-                    android:backgroundTint="@color/khaki"
-                    android:fontFamily="@font/habibi"
-                    android:text="Register"
-                    android:textAllCaps="false"
-                    android:textColor="@color/black"/>
+                android:fontFamily="@font/habibi"
+                android:gravity="center_horizontal"
+                android:text="Register"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:fontFamily="@font/habibi"
-                    android:text="Belum Punya Akun?"
-                    android:textColor="@color/black"
-                    android:textSize="12dp"/>
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:fontFamily="@font/habibi"
-                    android:text="Register"
-                    android:textColor="@color/blue_old"
-                    android:textSize="12dp"/>
-            </LinearLayout>
+        <!--        Email Box-->
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center_horizontal">
 
 
+            <EditText
+                android:id="@+id/fullname"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:hint="Fullname"
+                android:minHeight="48dp" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
-    </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center_horizontal">
+
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:minHeight="48dp" />
+
+        </LinearLayout>
+
+        <!--        Password Box-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center_horizontal">
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:ems="10"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:minHeight="48dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center_horizontal">
+
+            <EditText
+                android:id="@+id/confirm_password"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:minHeight="48dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+        </LinearLayout>
+
+
+
+
+
+        <!--        Button Login-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/khaki"
+                android:fontFamily="@font/habibi"
+                android:text="Register"
+                android:textAllCaps="false"
+                android:ems="15"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <!--        Buat Akun -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Sudah Punya Akun ? "
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/btnRegister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Login"
+                android:fontFamily="@font/habibi"
+                android:textColor="@color/teal_200"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
