@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "537012921738",
-    "project_id": "cahbrebes-c6e5c",
-    "storage_bucket": "cahbrebes-c6e5c.appspot.com"
+    "project_number": "689340486160",
+    "project_id": "cah-brebes",
+    "storage_bucket": "cah-brebes.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:537012921738:android:334d0ddb8f564570829473",
+        "mobilesdk_app_id": "1:689340486160:android:4b28a4e6a67a4090d4b095",
         "android_client_info": {
           "package_name": "com.mypmo.cahbrebes"
         }
       },
       "oauth_client": [
         {
-          "client_id": "537012921738-ktdv018dqgmt0t30plrp6rub918kark6.apps.googleusercontent.com",
+          "client_id": "689340486160-2dfa7el3le0mo0msk939tdaoo95q3ls5.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDrXyazYTpDrckpAh2dxRSRRlvDgXv89mU"
+          "current_key": "AIzaSyA6X52CaWg_ChD7vKd2NuPTNC_k3YfEi20"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "537012921738-ktdv018dqgmt0t30plrp6rub918kark6.apps.googleusercontent.com",
+              "client_id": "689340486160-2dfa7el3le0mo0msk939tdaoo95q3ls5.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
