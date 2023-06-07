@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -73,6 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()){
+                        sendVerificationEmail();
                         Toast.makeText(RegisterActivity.this, "User Berhasil Registrasi", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                     }
@@ -83,5 +85,26 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void sendVerificationEmail() {
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        user.sendEmailVerification()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(RegisterActivity.this, "Email verifikasi berhasil dikirim!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }else {
+                            Toast.makeText(RegisterActivity.this, "Email verifikasi tidak dapat dikirim!", Toast.LENGTH_SHORT).show();
+                            overridePendingTransition(0, 0);
+                            finish();
+                            overridePendingTransition(0,  0);
+                            startActivity(getIntent());
+                        }
+                    }
+                });
     }
 }
