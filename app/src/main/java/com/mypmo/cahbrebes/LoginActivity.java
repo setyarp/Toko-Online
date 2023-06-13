@@ -39,11 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
-        // Mengecek jika user udah ada dan email udah verified maka langsung ke halaman main
-        if (user != null && user.isEmailVerified()) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
-        }
+
 
         // Inisialisasi ID
         etEmailLog = findViewById(R.id.emailLog);
