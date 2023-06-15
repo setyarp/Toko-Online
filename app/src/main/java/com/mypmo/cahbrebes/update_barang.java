@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ public class update_barang extends AppCompatActivity {
     private EditText updateNamaBarang, updateHargaBarang, updateStock, updateDeskripsi;
     private ImageView imageBaru;
     private Button btnUpdateTask, inputTanggal, uploadBaru;
+    private ProgressBar progressBar;
 
     private String cekNamaBarang, cekHargaBarang, cekExpired, cekStock, cekDeskripsi, cekImageBarang;
 
@@ -64,6 +66,8 @@ public class update_barang extends AppCompatActivity {
         updateDeskripsi = findViewById(R.id.newDeskripsi);
         imageBaru = findViewById(R.id.newlookimage);
         uploadBaru = findViewById(R.id.newuploadimage);
+        progressBar = findViewById(R.id.progres_updatebarang);
+        progressBar.setVisibility(View.GONE);
 
         btnUpdateTask = findViewById(R.id.btnUpdatebarang);
 
@@ -92,6 +96,7 @@ public class update_barang extends AppCompatActivity {
         btnUpdateTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
                 StorageReference filePath = mStorage.getReference().child("images/" + UUID.randomUUID().toString());
                 filePath.putFile(fotoUrl).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -173,6 +178,7 @@ public class update_barang extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
 
                         Toast.makeText(update_barang.this,"Data produk berhasil di update",Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
                         finish();
                     }
                 });

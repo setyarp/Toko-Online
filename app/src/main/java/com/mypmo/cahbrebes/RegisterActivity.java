@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText nama, emailReg, passwordReg;
     Button registerReg;
     TextView tvLogin;
+    ProgressBar progressBar;
     FirebaseAuth mAuth;
 
     @Override
@@ -37,13 +39,15 @@ public class RegisterActivity extends AppCompatActivity {
         passwordReg = findViewById(R.id.passwordRegis);
         registerReg = findViewById(R.id.btnReg);
         tvLogin = findViewById(R.id.tvRegister);
-
+        progressBar = findViewById(R.id.progres_register);
+        progressBar.setVisibility(View.GONE);
 
         mAuth = FirebaseAuth.getInstance();
 
         registerReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
                 createUser();
 //                progressBar.setVisibility(View.VISIBLE);
             }
@@ -80,7 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                     else if (!task.isSuccessful()){
                         Toast.makeText(RegisterActivity.this, "User Gagal Registrasi", Toast.LENGTH_SHORT).show();
-//                        progressBar.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.GONE);
                     }
                 }
             });

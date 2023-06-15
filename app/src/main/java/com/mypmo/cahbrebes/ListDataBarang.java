@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,6 +13,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,7 +41,9 @@ public class ListDataBarang extends AppCompatActivity implements RecycleViewAdap
 
     //DEKLARASI SEARCH
     private EditText searchView;
+    private ProgressBar progressBar;
     
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +51,9 @@ public class ListDataBarang extends AppCompatActivity implements RecycleViewAdap
 
         recyclerView = findViewById(R.id.datalistbarang);
         floatingButton = findViewById(R.id.floatingButton);
+        progressBar = findViewById(R.id.progres_listdatabarang);
+        progressBar.setVisibility(View.VISIBLE);
+
         MyRecyclerView();
         GetData("");
 
@@ -118,7 +125,7 @@ public class ListDataBarang extends AppCompatActivity implements RecycleViewAdap
 //                            }else{
 //                                gambar.setVisibility(View.VISIBLE);
 //                            }
-
+                            progressBar.setVisibility(View.GONE);
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {

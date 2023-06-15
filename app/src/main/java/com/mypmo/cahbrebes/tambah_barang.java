@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class tambah_barang extends AppCompatActivity {
     private ImageView Image;
     private Button btnSaveTask, inputTanggal, btnGambar;
     private TextView outputTanggal;
+    private ProgressBar progressBar;
 
     private String getNamaBarang, getHargaBarang, getExpired, getStock, getDeskripsi, getImageBarang;
 
@@ -61,6 +63,8 @@ public class tambah_barang extends AppCompatActivity {
         inputDeskripsi = findViewById(R.id.addDeskripsi);
         Image = findViewById(R.id.lookimage);
         btnGambar = findViewById(R.id.uploadimage);
+        progressBar = findViewById(R.id.progres_tambahbarang);
+        progressBar.setVisibility(View.GONE);
 
         btnSaveTask = findViewById(R.id.btnSavebarang);
 
@@ -104,6 +108,7 @@ public class tambah_barang extends AppCompatActivity {
                                 getDeskripsi = inputDeskripsi.getText().toString();
                                 getImageBarang = task.getResult().toString();
 
+                                progressBar.setVisibility(View.VISIBLE);
                                 checkBarang();
 
                             }

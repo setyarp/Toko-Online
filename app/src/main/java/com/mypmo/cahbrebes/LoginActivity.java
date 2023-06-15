@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     TextView tvLupaPass, tvLogin;
     EditText etEmailLog, etPasswordLog;
+    ProgressBar progressBar;
     FirebaseAuth mAuth;
     FirebaseUser user;
 
@@ -47,7 +49,8 @@ public class LoginActivity extends AppCompatActivity {
         tvLupaPass = findViewById(R.id.LupaPass);
         tvLogin = findViewById(R.id.tvLogin);
         btnLogin = findViewById(R.id.btnLogin);
-
+        progressBar = findViewById(R.id.progres_login);
+        progressBar.setVisibility(View.GONE);
 //
 //        progress = new ProgressDialog(this);
 //        progress.setMessage("Loading data ...");
@@ -57,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
                 login();
             }
         });
@@ -95,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                     else if (!task.isSuccessful()){
                         Toast.makeText(getApplicationContext(), "Tidak Dapat Masuk, Silahkan Coba Lagi"
                                 , Toast.LENGTH_SHORT).show();
-//                        progressBar.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.GONE);
                     }
                 }
             });

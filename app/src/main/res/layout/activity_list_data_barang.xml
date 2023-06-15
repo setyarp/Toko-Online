@@ -50,4 +50,12 @@
         android:elevation="20dp"
         android:src="@android:drawable/ic_input_add"
         app:backgroundTint="@color/pink" />
+
+    <!--    Progres Bar-->
+    <ProgressBar
+        android:id="@+id/progres_listdatabarang"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
 </RelativeLayout>

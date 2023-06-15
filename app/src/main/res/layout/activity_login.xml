@@ -7,7 +7,6 @@
     tools:context=".LoginActivity"
     android:background="@drawable/background2_gradasi">
 
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="176dp"
@@ -159,5 +158,12 @@
 
     </LinearLayout>
 
+    <!--    Progres Bar-->
+    <ProgressBar
+        android:id="@+id/progres_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
 
 </RelativeLayout>
