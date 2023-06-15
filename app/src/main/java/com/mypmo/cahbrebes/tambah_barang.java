@@ -126,8 +126,14 @@ public class tambah_barang extends AppCompatActivity {
     }
 
     private void checkBarang() {
-        if(isEmpty(getNamaBarang) || isEmpty(getHargaBarang) || isEmpty(getStock) || isEmpty(getDeskripsi)){
-            Toast.makeText(tambah_barang.this,"Data harus diisi",Toast.LENGTH_SHORT).show();
+        if(inputNamaBarang.length() == 0) {
+            inputNamaBarang.setError("Masukan nama barang");
+        }else if(inputHargaBarang.length() == 0){
+            inputHargaBarang.setError("Masukkan harga barang");
+        }else if(inputStock.length() == 0){
+            inputStock.setError("Masukkan stock");
+        }else if(inputDeskripsi.length() == 0){
+            inputDeskripsi.setError("Masukkan deskripsi");
         } else{
             getReference.child("Admin").child("DataBarang").push()
                     .setValue(new data_barang(
