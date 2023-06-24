@@ -3,6 +3,7 @@ package com.mypmo.cahbrebes.recycleview;
 import static android.text.TextUtils.isEmpty;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mypmo.cahbrebes.DetailProdukActivity;
 import com.mypmo.cahbrebes.R;
 import com.mypmo.cahbrebes.model.data_barang;
 import com.squareup.picasso.Picasso;
@@ -54,7 +56,23 @@ public class RecycleViewAdapterProduk extends RecyclerView.Adapter<RecycleViewAd
         } else {
             Picasso.get().load(gambar).into(holder.imageViewProduk);
         }
+
+        // Set listener saat di klik di item
+        holder.ListItemProduk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), DetailProdukActivity.class);
+                intent.putExtra("namaproduk",listProduk.get(position).getNamabarang());
+                intent.putExtra("gambarproduk",listProduk.get(position).getImagebarang());
+                intent.putExtra("hargaproduk",listProduk.get(position).getHargabarang());
+                intent.putExtra("expiredproduk",listProduk.get(position).getExpired());
+                intent.putExtra("deskripsiproduk",listProduk.get(position).getDeskripsi());
+                view.getContext().startActivity(intent);
+            }
+        });
     }
+
+
 
     @Override
     public int getItemCount() {
