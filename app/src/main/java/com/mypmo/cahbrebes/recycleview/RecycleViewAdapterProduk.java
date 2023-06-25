@@ -62,6 +62,7 @@ public class RecycleViewAdapterProduk extends RecyclerView.Adapter<RecycleViewAd
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), DetailProdukActivity.class);
+                intent.putExtra("key",listProduk.get(position).getKey());
                 intent.putExtra("namaproduk",listProduk.get(position).getNamabarang());
                 intent.putExtra("gambarproduk",listProduk.get(position).getImagebarang());
                 intent.putExtra("hargaproduk",listProduk.get(position).getHargabarang());

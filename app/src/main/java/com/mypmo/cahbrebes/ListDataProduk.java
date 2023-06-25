@@ -6,14 +6,18 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,18 +35,25 @@ public class ListDataProduk extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private FloatingActionButton floatingButton;
 
     DatabaseReference getReference; // ini yg jadi dipake
     private ArrayList<data_barang> dataProduk;
 
     private EditText searchView;
+    private ProgressBar progressBar;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_data_produk);
 
         recyclerView = findViewById(R.id.datalistproduk);
+
+        floatingButton = findViewById(R.id.fab_cart);
+        progressBar = findViewById(R.id.progres_listdatabarang);
+        progressBar.setVisibility(View.VISIBLE);
 
         MyRecyclerView();
         GetData("");
@@ -67,6 +78,13 @@ public class ListDataProduk extends AppCompatActivity {
                     GetData("");
                 }
 
+            }
+        });
+                floatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ListDataProduk.this,CartActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -108,7 +126,7 @@ public class ListDataProduk extends AppCompatActivity {
 //                            }else{
 //                                gambar.setVisibility(View.VISIBLE);
 //                            }
-//                            progressBar.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {

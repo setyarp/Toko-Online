@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,8 +15,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -35,7 +40,7 @@ public class DetailProdukActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_produk);
 
-        productID = getIntent().getStringExtra("pid");
+        productID = getIntent().getStringExtra("key");
 
         detailGambar = findViewById(R.id.detail_gambar);
         detailNama = findViewById(R.id.detail_nama);
@@ -62,6 +67,15 @@ public class DetailProdukActivity extends AppCompatActivity {
                 }
             }
         });
+
+//
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        CheckOrderState();
     }
 
     private void addingToCartList() {
@@ -70,12 +84,13 @@ public class DetailProdukActivity extends AppCompatActivity {
         SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd. yyy");
         saveCurrentDate = currentDate.format(calForDate.getTime());
         SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a");
-        saveCurrentTime = currentDate.format(calForDate.getTime());
+        saveCurrentTime = currentTime.format(calForDate.getTime());
+        String harga = getIntent().getExtras().getString("hargaproduk");
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Cart List");
         final HashMap<String, Object> cartMap = new HashMap<>();
-        cartMap.put("pid",productID);
+        cartMap.put("key",productID);
         cartMap.put("pname",detailNama.getText().toString());
-        cartMap.put("price",detailHarga.getText().toString());
+        cartMap.put("price",harga);
         cartMap.put("date",saveCurrentDate);
         cartMap.put("time",saveCurrentTime);
         cartMap.put("quantity",quantity);
@@ -101,8 +116,30 @@ public class DetailProdukActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    private void CheckOrderState()
+    {
+        DatabaseReference ordersRef;
+        ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders");
+        ordersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    String shippingState = dataSnapshot.child("state").getValue().toString();
+                    if (shippingState.equals("Shipped")){
+                        state ="Order Shipped";
+                    }
+                    else if (shippingState.equals("Not Shipped")){
+                        state ="Order Placed";
+                    }
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
     }
 }

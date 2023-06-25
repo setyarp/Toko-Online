@@ -3,25 +3,24 @@ package com.mypmo.cahbrebes.model;
 
 
 public class Cart {
-    private String pid,pname,price,quantity,discount;
+    private String key,pname,price,quantity;
 
     public Cart() {
     }
 
-    public Cart(String pid, String pname, String price, String quantity, String discount) {
-        this.pid = pid;
+    public Cart(String key, String pname, String price, String quantity) {
+        this.key = key;
         this.pname = pname;
         this.price = price;
         this.quantity = quantity;
-        this.discount = discount;
     }
 
-    public String getPid() {
-        return pid;
+    public String getKey() {
+        return key;
     }
 
-    public void setPid(String pid) {
-        this.pid = pid;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getPname() {
@@ -46,13 +45,5 @@ public class Cart {
 
     public void setQuantity(String quantity) {
         this.quantity = quantity;
-    }
-
-    public String getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(String discount) {
-        this.discount = discount;
     }
 }

@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class MainActivity extends AppCompatActivity {
 
     // Deklarasi Variable
-    private CardView DataBarang, TambahBarang;
+    private CardView DataBarang, TambahBarang, DataPesanan;
     private TextView logout, emailLogin;
 
     FirebaseAuth mAuth;
@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         // Deklarasi ID
         DataBarang = (CardView) findViewById(R.id.cv1);
+        DataPesanan = (CardView) findViewById(R.id.cv2);
         TambahBarang = (CardView) findViewById(R.id.cv3);
         logout = findViewById(R.id.logout);
         emailLogin = findViewById(R.id.name);
@@ -58,6 +59,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent a = new Intent(MainActivity.this, tambah_barang.class);
+                startActivity(a);
+            }
+        });
+
+        DataPesanan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent a = new Intent(MainActivity.this, AdminNewOrdersActivity.class);
                 startActivity(a);
             }
         });
