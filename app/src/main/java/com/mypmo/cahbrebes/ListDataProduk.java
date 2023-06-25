@@ -52,7 +52,7 @@ public class ListDataProduk extends AppCompatActivity {
         recyclerView = findViewById(R.id.datalistproduk);
 
         floatingButton = findViewById(R.id.fab_cart);
-        progressBar = findViewById(R.id.progres_listdatabarang);
+        progressBar = findViewById(R.id.progres_listdataproduk);
         progressBar.setVisibility(View.VISIBLE);
 
         MyRecyclerView();
