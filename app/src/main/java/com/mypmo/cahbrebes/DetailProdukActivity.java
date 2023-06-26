@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mypmo.cahbrebes.Prevalent.Prevalent;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -30,9 +31,11 @@ import java.util.HashMap;
 public class DetailProdukActivity extends AppCompatActivity {
 
     ImageView detailGambar;
-    TextView detailNama, detailHarga, detailExpired, detailDeskripsi;
+    TextView detailNama, detailHarga, detailExpired, detailDeskripsi, addItem, removeItem;
+    TextView quantity;
     Button btnPesan;
-    private String productID="", state = "Normal", quantity="1";
+    private String productID="", state = "Normal";
+    int totalQuantity = 1;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -49,11 +52,35 @@ public class DetailProdukActivity extends AppCompatActivity {
         detailDeskripsi = findViewById(R.id.detail_deskripsi);
         btnPesan = findViewById(R.id.btnPesan);
 
+        quantity = findViewById(R.id.quantity);
+        addItem = findViewById(R.id.plus);
+        removeItem = findViewById(R.id.minus);
+
         detailNama.setText(getIntent().getExtras().getString("namaproduk"));
         detailHarga.setText("Rp. " + getIntent().getExtras().getString("hargaproduk"));
         detailExpired.setText("- Baik digunakan sebelum : " + getIntent().getExtras().getString("expiredproduk"));
         detailDeskripsi.setText("- Deskripsi : " + getIntent().getExtras().getString("deskripsiproduk"));
         Picasso.get().load(getIntent().getExtras().getString("gambarproduk")).into(detailGambar);
+
+        addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (totalQuantity < 10){
+                    totalQuantity++;
+                    quantity.setText(String.valueOf(totalQuantity));
+                }
+            }
+        });
+
+        removeItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (totalQuantity > 1){
+                    totalQuantity--;
+                    quantity.setText(String.valueOf(totalQuantity));
+                }
+            }
+        });
 
         btnPesan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,14 +120,14 @@ public class DetailProdukActivity extends AppCompatActivity {
         cartMap.put("price",harga);
         cartMap.put("date",saveCurrentDate);
         cartMap.put("time",saveCurrentTime);
-        cartMap.put("quantity",quantity);
+        cartMap.put("quantity",quantity.getText().toString());
 //        cartMap.put("discount","");
 
-        cartListRef.child("User view").child("Products").child(productID).updateChildren(cartMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        cartListRef.child("User view").child(Prevalent.currentOnlineUser.getPhone()).child("Products").child(productID).updateChildren(cartMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
-                    cartListRef.child("Admin")
+                    cartListRef.child("Admin view").child(Prevalent.currentOnlineUser.getPhone())
                             .child("Products").child(productID)
                             .updateChildren(cartMap)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -121,7 +148,7 @@ public class DetailProdukActivity extends AppCompatActivity {
     private void CheckOrderState()
     {
         DatabaseReference ordersRef;
-        ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders");
+        ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(Prevalent.currentOnlineUser.getPhone());
         ordersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

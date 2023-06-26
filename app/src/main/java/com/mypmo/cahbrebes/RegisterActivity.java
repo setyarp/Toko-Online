@@ -27,10 +27,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText nama, emailReg, passwordReg;
+    EditText nama, emailReg, passwordReg, phone;
     Button registerReg;
     TextView tvLogin;
     ProgressBar progressBar;
@@ -38,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     //    Iklan
     private AdView mAdView;
+    DatabaseReference getReference;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -90,6 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
         emailReg = findViewById(R.id.emailRegis);
         nama = findViewById(R.id.fullname);
         passwordReg = findViewById(R.id.passwordRegis);
+        phone = findViewById(R.id.phone);
         registerReg = findViewById(R.id.btnReg);
         tvLogin = findViewById(R.id.tvRegister);
         progressBar = findViewById(R.id.progres_register);
@@ -117,6 +126,8 @@ public class RegisterActivity extends AppCompatActivity {
     private void createUser() {
         String email = emailReg.getText().toString();
         String password = passwordReg.getText().toString();
+        String fullname = nama.getText().toString();
+        String phonenum = phone.getText().toString();
 
         if (TextUtils.isEmpty(email)){
             emailReg.setError("Email Cannot be Empty");
@@ -127,18 +138,43 @@ public class RegisterActivity extends AppCompatActivity {
             passwordReg.requestFocus();
         }
         else  {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            getReference = database.getReference();
             mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()){
-                        sendVerificationEmail();
-                        Toast.makeText(RegisterActivity.this, "User Berhasil Registrasi", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                    }
-                    else if (!task.isSuccessful()){
-                        Toast.makeText(RegisterActivity.this, "User Gagal Registrasi", Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.GONE);
-                    }
+                    getReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (!(snapshot.child("Users").child(phonenum).exists())){
+                                HashMap<String, Object> userdataMap = new HashMap<>();
+                                userdataMap.put("phone", phonenum);
+                                userdataMap.put("password", password);
+                                userdataMap.put("name", fullname);
+                                getReference.child("Users").child(phonenum).updateChildren(userdataMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()){
+                                            sendVerificationEmail();
+                                            Toast.makeText(RegisterActivity.this, "User Berhasil Registrasi", Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                                        }
+                                        else if (!task.isSuccessful()){
+                                            Toast.makeText(RegisterActivity.this, "Nomor " + phonenum + " sudah ada.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(RegisterActivity.this, "User Gagal Registrasi", Toast.LENGTH_SHORT).show();
+                                            progressBar.setVisibility(View.GONE);
+                                        }
+                                    }
+                                    });
+                                }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
                 }
             });
         }

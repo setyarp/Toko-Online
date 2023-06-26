@@ -60,14 +60,30 @@
         android:layout_marginRight="20dp"
         android:hint="Kota"
         />
+
     <Button
         android:id="@+id/confirm_final_order_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="50dp"
         android:text="Confirm"
         android:textColor="@android:color/black"
-        android:textSize="30dp"
-        />
+        android:textSize="30dp" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adViewFinalConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        app:adSize="BANNER"
+        app:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"></com.google.android.gms.ads.AdView>
 </RelativeLayout>

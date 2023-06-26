@@ -15,9 +15,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,14 +38,16 @@ public class ListDataProduk extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private FloatingActionButton floatingButton;
+    FirebaseAuth mAuth;
 
     DatabaseReference getReference; // ini yg jadi dipake
     private ArrayList<data_barang> dataProduk;
 
     private EditText searchView;
+    private TextView logout;
     private ProgressBar progressBar;
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +55,10 @@ public class ListDataProduk extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.datalistproduk);
 
+        mAuth = FirebaseAuth.getInstance();
+
         floatingButton = findViewById(R.id.fab_cart);
+        logout = findViewById(R.id.users_logout);
         progressBar = findViewById(R.id.progres_listdataproduk);
         progressBar.setVisibility(View.VISIBLE);
 
@@ -85,6 +92,16 @@ public class ListDataProduk extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ListDataProduk.this,CartActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                Toast.makeText(ListDataProduk.this, "Logout Berhasil", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(ListDataProduk.this, LoginActivity.class));
+                finish();
             }
         });
     }
@@ -168,5 +185,13 @@ public class ListDataProduk extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    // Keluar Aplikasi
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+        finish();
     }
 }

@@ -74,7 +74,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:background="@android:color/white"
-            android:text="Show User Order Product"
+            android:text="Lihat Detail Pesanan pelanggan"
             android:textColor="#000000"
             android:textSize="20dp"
             android:layout_marginTop="20dp"

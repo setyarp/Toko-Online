@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mAuth.signOut();
                 Toast.makeText(MainActivity.this, "Logout Berhasil", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(MainActivity.this, MainPage.class));
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 finish();
             }
         });

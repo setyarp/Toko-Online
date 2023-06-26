@@ -1,5 +1,7 @@
 package com.mypmo.cahbrebes;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,11 @@ import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +34,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mypmo.cahbrebes.Prevalent.CartViewHolder;
+import com.mypmo.cahbrebes.Prevalent.Prevalent;
 import com.mypmo.cahbrebes.model.Cart;
 
 public class CartActivity extends AppCompatActivity {
@@ -35,10 +44,33 @@ public class CartActivity extends AppCompatActivity {
     private TextView txtTotalAmount, txtMsg1;
     private int overTotalPrice=0;
 
+    //    Iklan
+    private InterstitialAd mInterstitialAd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        //      Iklan Interstitial
+        InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712", adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAd = interstitialAd;
+                        Log.i(TAG, "onAdLoaded");
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.i(TAG, loadAdError.getMessage());
+                        mInterstitialAd = null;
+                    }
+                });
 
         recyclerView = findViewById(R.id.cart_list);
         recyclerView.setHasFixedSize(true);
@@ -54,6 +86,11 @@ public class CartActivity extends AppCompatActivity {
                 Intent intent = new Intent(CartActivity.this,ConfirmFinalOrderActivity.class);
                 intent.putExtra("Total Harga", String.valueOf(overTotalPrice));
                 startActivity(intent);
+                if (mInterstitialAd != null) {
+                    mInterstitialAd.show(CartActivity.this);
+                } else {
+                    Log.d("TAG", "Iklan tidak ada saat ini.");
+                }
                 finish();
             }
         });
@@ -68,7 +105,7 @@ public class CartActivity extends AppCompatActivity {
         FirebaseRecyclerOptions<Cart> options =
                 new FirebaseRecyclerOptions.Builder<Cart>()
                         .setQuery(cartListRef.child("User view")
-                                .child("Products"),Cart.class).build();
+                                .child(Prevalent.currentOnlineUser.getPhone()).child("Products"),Cart.class).build();
         FirebaseRecyclerAdapter<Cart, CartViewHolder> adapter
                 = new FirebaseRecyclerAdapter<Cart, CartViewHolder>(options) {
             @Override
@@ -84,7 +121,7 @@ public class CartActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         CharSequence options[] = new CharSequence[]
                                 {
-                                        "Edit",
+                                        "",
                                         "Hapus"
                                 };
                         AlertDialog.Builder builder = new AlertDialog.Builder(CartActivity.this);
@@ -99,6 +136,7 @@ public class CartActivity extends AppCompatActivity {
                                 }
                                 if (i==1){
                                     cartListRef.child("User view")
+                                            .child(Prevalent.currentOnlineUser.getPhone())
                                             .child("Products")
                                             .child(model.getKey())
                                             .removeValue()
@@ -134,7 +172,7 @@ public class CartActivity extends AppCompatActivity {
     private void CheckOrderState()
     {
         DatabaseReference ordersRef;
-        ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders");
+        ordersRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(Prevalent.currentOnlineUser.getPhone());
         ordersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

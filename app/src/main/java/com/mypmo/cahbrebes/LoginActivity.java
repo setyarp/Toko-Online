@@ -6,6 +6,7 @@ import static android.util.Patterns.EMAIL_ADDRESS;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -37,13 +38,22 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.mypmo.cahbrebes.Prevalent.Prevalent;
+import com.mypmo.cahbrebes.model.Users;
 
 public class LoginActivity extends AppCompatActivity {
 
     Button btnLogin;
-    TextView tvLupaPass, tvLogin;
-    EditText etEmailLog, etPasswordLog;
+    TextView tvLogin, AdminLink, NotAdminLink;
+    EditText etEmailLog, etPasswordLog,etPhoneLog;
     ProgressBar progressBar;
+    private String parentDbName = "Users";
+    DatabaseReference getReference;
     FirebaseAuth mAuth;
     FirebaseUser user;
 
@@ -51,11 +61,20 @@ public class LoginActivity extends AppCompatActivity {
     private AdView mAdView;
     private RewardedAd mRewardedAd;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+
+        // Mengecek jika user udah ada dan email udah verified maka langsung ke halaman main
+        if (user != null && user.isEmailVerified()) {
+            startActivity(new Intent(LoginActivity.this, ListDataProduk.class));
+            finish();
+        }
         // Iklan banner
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
@@ -122,9 +141,12 @@ public class LoginActivity extends AppCompatActivity {
         // Inisialisasi ID
         etEmailLog = findViewById(R.id.emailLog);
         etPasswordLog = findViewById(R.id.passwordLog);
+        etPhoneLog = findViewById(R.id.phoneLogin);
         tvLogin = findViewById(R.id.tvLogin);
         btnLogin = findViewById(R.id.btnLogin);
         progressBar = findViewById(R.id.progres_login);
+        AdminLink = findViewById(R.id.admin_panel_link);
+        NotAdminLink = findViewById(R.id.not_admin_panel_link);
         progressBar.setVisibility(View.GONE);
 //
 //        progress = new ProgressDialog(this);
@@ -137,6 +159,27 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
                 login();
+            }
+        });
+
+        AdminLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                btnLogin.setText("Login Admin");
+                AdminLink.setVisibility(View.INVISIBLE);
+                NotAdminLink.setVisibility(View.VISIBLE);
+                parentDbName = "Admins";
+            }
+        });
+        NotAdminLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                btnLogin.setText("Login");
+                AdminLink.setVisibility(View.VISIBLE);
+                NotAdminLink.setVisibility(View.INVISIBLE);
+                parentDbName = "Users";
             }
         });
 
@@ -154,6 +197,7 @@ public class LoginActivity extends AppCompatActivity {
     private void login() {
         String email = etEmailLog.getText().toString();
         String password = etPasswordLog.getText().toString();
+        String phone = etPhoneLog.getText().toString();
 
         if (email.isEmpty()) {
             etEmailLog.setError("Email tidak boleh kosong.");
@@ -169,7 +213,8 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()){
-                        checkIfEmailVerified();
+//                        checkIfEmailVerified();
+                        AllowAccessToAccount(phone, password);
                     }
                     else if (!task.isSuccessful()){
                         Toast.makeText(getApplicationContext(), "Tidak Dapat Masuk, Silahkan Coba Lagi"
@@ -181,10 +226,65 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void AllowAccessToAccount(final String phone, final String password)
+    {
+
+        final DatabaseReference RootRef;
+        RootRef = FirebaseDatabase.getInstance().getReference();
+        user = mAuth.getCurrentUser();
+        RootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child(parentDbName).child(phone).exists()){
+
+                    Users usersData = dataSnapshot.child(parentDbName).child(phone).getValue(Users.class);
+                    if (usersData.getPhone().equals(phone))
+                    {
+                        if (usersData.getPassword().equals(password))
+                        {
+                            if(parentDbName.equals("Admins"))
+                            {
+                                Toast.makeText(LoginActivity.this, "Hallo admin...", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
+
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                            else if (parentDbName.equals("Users")){
+                                Toast.makeText(LoginActivity.this, "Login Berhasil...", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
+
+                                Intent intent = new Intent(LoginActivity.this, ListDataProduk.class);
+                                Prevalent.currentOnlineUser = usersData;
+                                startActivity(intent);
+                            }
+
+                        }
+                        else {
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(LoginActivity.this,"Password is incorrect",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+                else {
+                    Toast.makeText(LoginActivity.this, "Akun dengan nomor " + phone + " tidak ada.", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     // verifikasi email
     private void checkIfEmailVerified()
     {
         user = mAuth.getCurrentUser();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        getReference = database.getReference();
 
         if (user.isEmailVerified())
         {

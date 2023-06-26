@@ -49,20 +49,20 @@ public class AdminNewOrdersActivity extends AppCompatActivity {
                     @Override
                     protected void onBindViewHolder(@NonNull AdminOrdersViewHolder holder, final int position, @NonNull final AdminOrders model) {
 
-                        holder.userName.setText("Name: "+model.getName());
-                        holder.userPhoneNumber.setText("Name: "+model.getPhone());
-                        holder.userTotalPrice.setText("Total Ammount = Rs."+model.getTotalAmount());
-                        holder.userDateTime.setText("Order at: "+model.getDate()+" "+ model.getTime());
-                        holder.userShippingAddress.setText("Shipping Address: "+model.getAddress()+", "+model.getCity());
-//                        holder.showOrdersBtn.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View view) {
-//                                String uID = getRef(position).getKey();
-//                                Intent intent = new Intent(AdminNewOrdersActivity.this,AdminUserProductsActivity.class);
-//                                intent.putExtra("uid",uID);
-//                                startActivity(intent);
-//                            }
-//                        });
+                        holder.userName.setText("Nama: "+model.getName());
+                        holder.userPhoneNumber.setText("No Hp: "+model.getPhone());
+                        holder.userTotalPrice.setText("Total harga = Rp."+model.getTotalAmount());
+                        holder.userDateTime.setText("Waktu order: "+model.getDate()+" "+ model.getTime());
+                        holder.userShippingAddress.setText("Alamat: "+model.getAddress()+", "+model.getCity());
+                        holder.showOrdersBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String uID = getRef(position).getKey();
+                                Intent intent = new Intent(AdminNewOrdersActivity.this,AdminUserProductsActivity.class);
+                                intent.putExtra("uid",uID);
+                                startActivity(intent);
+                            }
+                        });
 
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
