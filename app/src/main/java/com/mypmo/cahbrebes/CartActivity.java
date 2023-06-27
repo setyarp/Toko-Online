@@ -145,7 +145,7 @@ public class CartActivity extends AppCompatActivity {
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()){
                                                         Toast.makeText(CartActivity.this,"Item berhasil dihapus.",Toast.LENGTH_SHORT).show();
-                                                        Intent intent = new Intent(CartActivity.this,MainPage.class);
+                                                        Intent intent = new Intent(CartActivity.this,ListDataProduk.class);
                                                         startActivity(intent);
                                                     }
                                                 }
