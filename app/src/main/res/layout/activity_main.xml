@@ -29,15 +29,14 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/habibi"
         android:text="Name"
-        android:textColor="#A0A0A1"
         android:textSize="40px"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.057"
+        app:layout_constraintHorizontal_bias="0.073"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.166" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintVertical_bias="0.018" />
 
     <ImageView
         android:layout_width="100dp"
@@ -205,13 +204,13 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/coming_soon" />
+                    android:src="@drawable/ic_logout" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/habibi"
-                    android:text="Commingsoon"
+                    android:text="Logout"
                     android:textAlignment="center"
                     android:textColor="@color/black" />
             </LinearLayout>
@@ -219,36 +218,36 @@
 
     </GridLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="140dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/bg_rv"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gridLayout"
-        tools:ignore="MissingConstraints">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/linearLayout"-->
+<!--        android:layout_width="140dp"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:layout_marginTop="40dp"-->
+<!--        android:background="@drawable/bg_rv"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/gridLayout"-->
+<!--        tools:ignore="MissingConstraints">-->
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:paddingLeft="10dp"
-            android:src="@drawable/ic_logout" />
+<!--        <ImageView-->
+<!--            android:layout_width="40dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:paddingLeft="10dp"-->
+<!--            android:src="@drawable/ic_logout" />-->
 
-        <TextView
-            android:id="@+id/logout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/roboto_bold"
-            android:padding="5dp"
-            android:text="LOG OUT"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+<!--        <TextView-->
+<!--            android:id="@+id/logout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:fontFamily="@font/roboto_bold"-->
+<!--            android:padding="5dp"-->
+<!--            android:text="LOG OUT"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="20dp"-->
+<!--            android:textStyle="bold" />-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adViewMain"
@@ -262,7 +261,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"></com.google.android.gms.ads.AdView>
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout"></com.google.android.gms.ads.AdView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

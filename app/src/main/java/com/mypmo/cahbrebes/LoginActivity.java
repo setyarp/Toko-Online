@@ -253,10 +253,21 @@ public class LoginActivity extends AppCompatActivity {
                             else if (parentDbName.equals("Users")){
                                 Toast.makeText(LoginActivity.this, "Login Berhasil...", Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.GONE);
-
-                                Intent intent = new Intent(LoginActivity.this, ListDataProduk.class);
+                                if (mRewardedAd != null) {
+                                    Activity activityContext = LoginActivity.this;
+                                    mRewardedAd.show(activityContext, new OnUserEarnedRewardListener() {
+                                        @Override
+                                        public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                                            // Handle the reward.
+                                            startActivity( new Intent(LoginActivity.this, ListDataProduk.class));
+                                        }
+                                    });
+                                } else {
+                                    Log.d(TAG, "Iklan reward tidak tersedia saat ini.");
+                                }
+//                                Intent intent = new Intent(LoginActivity.this, ListDataProduk.class);
                                 Prevalent.currentOnlineUser = usersData;
-                                startActivity(intent);
+//                                startActivity(intent);
                             }
 
                         }

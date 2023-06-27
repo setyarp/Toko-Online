@@ -25,11 +25,17 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.mypmo.cahbrebes.model.Users;
 
 public class MainActivity extends AppCompatActivity {
 
     // Deklarasi Variable
-    private CardView DataBarang, TambahBarang, DataPesanan;
+    private CardView DataBarang, TambahBarang, DataPesanan, LogoutUsers;
     private TextView logout, emailLogin;
 
     //    Iklan
@@ -37,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private InterstitialAd mInterstitialAd;
 
     FirebaseAuth mAuth;
+    DatabaseReference getReference;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,16 +115,35 @@ public class MainActivity extends AppCompatActivity {
         DataBarang = (CardView) findViewById(R.id.cv1);
         DataPesanan = (CardView) findViewById(R.id.cv2);
         TambahBarang = (CardView) findViewById(R.id.cv3);
-        logout = findViewById(R.id.logout);
+        LogoutUsers = (CardView) findViewById(R.id.cv4);
+//        logout = findViewById(R.id.logout);
         emailLogin = findViewById(R.id.name);
 
         //        Mendapatkan Data Email yang sudah Login
-        if (mAuth.getCurrentUser() != null) {
-            emailLogin.setText(mAuth.getCurrentUser().getEmail());
+//        if (mAuth.getCurrentUser() != null) {
+//            emailLogin.setText(mAuth.getCurrentUser().getEmail());
+//
+//        }
 
-        }
+        // Mendapatkan nama admin yang login
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        getReference = database.getReference();
 
-        logout.setOnClickListener(new View.OnClickListener() {
+        getReference.child("Admins").child("821").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Users userModel=  snapshot.getValue(Users.class);
+                String currentUser = userModel.getName();
+                emailLogin.setText(currentUser);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        LogoutUsers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
